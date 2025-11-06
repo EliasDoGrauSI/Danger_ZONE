@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Livros</title>
+    <link rel="shortcut icon" href="favicon-32x32.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('1326370.png') center/cover no-repeat fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #954409 0%, #6d3207 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            color: #954409;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #954409;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #954409 0%, #6d3207 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(149, 68, 9, 0.4);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .books-section {
+            margin-top: 30px;
+        }
+
+        .books-section h2 {
+            color: #954409;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .book-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #954409;
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 150px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 0 auto 15px auto;
+            display: block;
+            border: 2px solid #e0e0e0;
+        }
+
+        .book-cover-placeholder {
+            width: 100%;
+            max-width: 150px;
+            height: 200px;
+            background: linear-gradient(135deg, #954409 0%, #6d3207 100%);
+            border-radius: 8px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .book-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .book-info {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .book-info strong {
+            color: #333;
+        }
+
+        .book-card .btn {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Gerenciador de Livros</h1>
+            <p>Organize sua biblioteca de forma simples e eficiente</p>
+        </header>
+
+        <div class="content">
+            <div class="form-section">
+                <h2>Adicionar Novo Livro</h2>
+                <form id="formLivro">
+                    <div class="form-group">
+                        <label for="titulo">Título do Livro</label>
+                        <input type="text" id="titulo" placeholder="Digite o título do livro" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editora">Editora</label>
+                        <input type="text" id="editora" placeholder="Digite o nome da editora" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numPaginas">Número de Páginas</label>
+                        <input type="number" id="numPaginas" placeholder="Digite o número de páginas" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="capa">URL da Capa</label>
+                        <input type="text" id="capa" placeholder="Digite a URL da imagem da capa (opcional)">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Adicionar Livro</button>
+                </form>
+            </div>
+
+            <div class="books-section">
+                <h2>Minha Biblioteca</h2>
+                <div id="listaLivros" class="books-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Função para renderizar os livros na página
+        function renderizarLivros() {
+            const listaLivros = document.getElementById('listaLivros');
+            listaLivros.innerHTML = '';
+
+            if (livros.length === 0) {
+                listaLivros.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="#999" viewBox="0 0 24 24">
+                            <path d="M19 2H9c-1.1 0-2 .9-2 2v5.5c0 .3.2.5.5.5s.5-.2.5-.5V4h11v16H8v-2c0-.3-.2-.5-.5-.5s-.5.2-.5.5v2c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                            <path d="M3 6c-.6 0-1 .4-1 1v10c0 .6.4 1 1 1h7c.6 0 1-.4 1-1V7c0-.6-.4-1-1-1H3zm7 10H3V7h7v9z"/>
+                        </svg>
+                        <h3>Nenhum livro cadastrado</h3>
+                        <p>Adicione seu primeiro livro usando o formulário acima</p>
+                    </div>
+                `;
+                return;
+            }
+
+            livros.forEach((livro, index) => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                
+                let capaHtml = '';
+                if (livro.capa && livro.capa.trim() !== '') {
+                    capaHtml = `<img src="${livro.capa}" alt="Capa de ${livro.titulo}" class="book-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="book-cover-placeholder" style="display: none;">${livro.titulo}</div>`;
+                } else {
+                    capaHtml = `<div class="book-cover-placeholder">${livro.titulo}</div>`;
+                }
+                
+                card.innerHTML = `
+                    ${capaHtml}
+                    <h3>${livro.titulo}</h3>
+                    <p class="book-info"><strong>Editora:</strong> ${livro.editora}</p>
+                    <p class="book-info"><strong>Páginas:</strong> ${livro.numPaginas}</p>
+                    <button class="btn btn-danger" onclick="removerLivroUI('${livro.titulo}')">Remover</button>
+                `;
+                listaLivros.appendChild(card);
+            });
+        }
+
+        // Função para adicionar livro via formulário
+        document.getElementById('formLivro').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const titulo = document.getElementById('titulo').value;
+            const editora = document.getElementById('editora').value;
+            const numPaginas = parseInt(document.getElementById('numPaginas').value);
+            const capa = document.getElementById('capa').value;
+
+            const novoLivro = new Livro(titulo, editora, numPaginas, capa);
+            incluirLivro(livros, novoLivro);
+
+            // Limpar o formulário
+            this.reset();
+
+            // Atualizar a lista
+            renderizarLivros();
+        });
+
+        // Função para remover livro com atualização da UI
+        function removerLivroUI(titulo) {
+            if (confirm(`Tem certeza que deseja remover o livro "${titulo}"?`)) {
+                removerLivro(livros, titulo);
+                renderizarLivros();
+            }
+        }
+
+        // Renderizar livros ao carregar a página
+        renderizarLivros();
+    </script>
+</body>
+</html>
