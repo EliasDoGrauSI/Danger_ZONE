@@ -321,14 +321,31 @@
             const numPaginas = parseInt(document.getElementById('numPaginas').value);
             const capa = document.getElementById('capa').value;
 
-            const novoLivro = new Livro(titulo, editora, numPaginas, capa);
-            incluirLivro(livros, novoLivro);
+            // Criar mensagem de confirmação com os dados do livro
+            const mensagemConfirmacao = `
+Confirme os dados do livro:
 
-            // Limpar o formulário
-            this.reset();
+📖 Título: ${titulo}
+🏢 Editora: ${editora}
+📄 Páginas: ${numPaginas}
+🖼️ Capa: ${capa || 'Não informada'}
 
-            // Atualizar a lista
-            renderizarLivros();
+Deseja adicionar este livro à sua biblioteca?`;
+
+            // Confirmar antes de adicionar
+            if (confirm(mensagemConfirmacao)) {
+                const novoLivro = new Livro(titulo, editora, numPaginas, capa);
+                incluirLivro(livros, novoLivro);
+
+                // Limpar o formulário
+                this.reset();
+
+                // Atualizar a lista
+                renderizarLivros();
+                
+                // Mostrar mensagem de sucesso
+                alert(`✅ Livro "${titulo}" adicionado com sucesso à sua biblioteca!`);
+            }
         });
 
         // Função para remover livro com atualização da UI
