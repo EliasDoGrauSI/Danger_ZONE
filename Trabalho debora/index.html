@@ -271,6 +271,7 @@
     <script>
         // Função para renderizar os livros na página
         function renderizarLivros() {
+            console.log('Renderizando livros:', livros);
             const listaLivros = document.getElementById('listaLivros');
             listaLivros.innerHTML = '';
 
@@ -339,7 +340,9 @@
         }
 
         // Renderizar livros ao carregar a página
-        renderizarLivros();
+        document.addEventListener('DOMContentLoaded', function() {
+            renderizarLivros();
+        });
     </script>
 </body>
 </html>

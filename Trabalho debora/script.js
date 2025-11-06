@@ -36,6 +36,7 @@ function salvarLivros() {
 
 // Vetor de livros carregado do localStorage
 let livros = carregarLivros();
+console.log('Livros carregados:', livros);
 
 // Função para incluir um novo livro
 function incluirLivro(vetor, livro) {
