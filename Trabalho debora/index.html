@@ -323,14 +323,14 @@
 
             // Criar mensagem de confirmação com os dados do livro
             const mensagemConfirmacao = `
-Confirme os dados do livro:
+            Confirme os dados do livro:
 
-📖 Título: ${titulo}
-🏢 Editora: ${editora}
-📄 Páginas: ${numPaginas}
-🖼️ Capa: ${capa || 'Não informada'}
+            📖 Título: ${titulo}
+            🏢 Editora: ${editora}
+            📄 Páginas: ${numPaginas}
+            🖼️ Capa: ${capa || 'Não informada'}
 
-Deseja adicionar este livro à sua biblioteca?`;
+            Deseja adicionar este livro à sua biblioteca?`;
 
             // Confirmar antes de adicionar
             if (confirm(mensagemConfirmacao)) {
